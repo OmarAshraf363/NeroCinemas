@@ -1,0 +1,142 @@
+﻿@model Movie
+@{
+    Layout = "_DetailsLayout";
+}
+<div class="container-fluid p-0 mb-4">
+
+    <div style="background-image:url('/Images/@Model.ImgUrl');" class="test container-fluid pe-4 ">
+        <img style="border-radius:3mm; width:400px; height:400px;" src="/Images/@Model.ImgUrl" alt="Alternate Text" />
+        <div style="width:40%; " class="p-3 ">
+
+            <p style="z-index:100; width:70%; color:rgb(228, 209, 97);  line-height:1.2; font-size:x-large" class=" ">
+                @Model.Name
+            </p>
+            <p style="z-index:100; width:75%;  color:#eee; line-height:1.2;" class=" ">
+                @Model.Description
+            </p>
+            <h5 style="z-index:100;color:#ccc;  line-height:1.2;" class=" ">
+                Category : <a class="text-danger text-decoration-none" asp-action="CategoryMovies" asp-controller="Category" asp-route-id="@Model.CategoryId">@Model.Category.Name</a>
+            </h5>
+            <h5 style="z-index:100;  color:#ccc; line-height:1.2; " class=" ">
+                Cinema : <a class="text-danger text-decoration-none" asp-action="Movies" asp-controller="Cinema" asp-route-id="@Model.CinemaId">@Model.Cinema.Name</a>
+            </h5>
+            <h6 style="color:@(Model.MovieStatus==MovieStatus.Expired? "red": "Blue")">@Model.MovieStatus</h6>
+
+            <h6>@Model.StartDate</h6>
+            <h6>@Model.EndDate</h6>
+            <h6>price : <span class="text-warning">@Model.Price</span> </h6>
+            <div id="casts">
+                <h4>Cast:</h4>
+                @foreach (var item in Model.ActorMovies)
+                {
+
+                    <a asp-action="GetActor" asp-controller="Actor" asp-route-id="@item.ActorId"><img src="/cast/@item.Actor.ProfilePucture" alt="Alternate Text" /></a>
+
+
+                }
+            </div>
+
+
+            <div class=" mt-3 w-50 ">
+                @if (Model.MovieStatus == MovieStatus.Expired)
+                {
+                    <button onclick="watchPremo('@Model.TrailerUrl')" class="btn btn-outline-warning">Watch Primo</button>
+                    <button disabled class="btn btn-outline-success">Book Now</button>
+                }
+                else
+                {
+                    <button onclick="watchPremo('@Model.TrailerUrl')" class="btn btn-outline-warning">Watch Primo</button>
+                    <button class="btn btn-outline-success">Book Now</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container d-flex flex-wrap align-items-center gap-3">
+    <div class="container mb-4 mt-5">
+        <h2 class="text-warning ">
+            Some Related Movies
+        </h2>
+    </div>
+    @foreach (var movie in Model.Category.Movies)
+    {
+        <div onclick="details(@movie.Id)" style="background-image: url('/Images/@movie.ImgUrl');" class="onefilm text-center">
+            <p>@movie.Name</p>
+
+            <p>(@movie.Category.Name)</p>
+            <div class="handel text-center">
+
+                @if (movie.MovieStatus == MovieStatus.Upcoming)
+                {
+                    <a style="background-color:green" class="btn ">
+                        @movie.MovieStatus
+                    </a>
+                }
+                else if (movie.MovieStatus == MovieStatus.Available)
+                {
+                    <a style="background-color:blue" class="btn ">
+                        @movie.MovieStatus
+                    </a>
+                    <a class="btn btn-outline-success">Book</a>
+                }
+                else
+                {
+                    <a style="background-color:red" class="btn ">
+                        @movie.MovieStatus
+                    </a>
+                }
+            </div>
+
+
+
+
+        </div>
+
+    }
+</div>
+
+
+<div class="container d-flex flex-wrap align-items-center gap-3">
+    <div class="container mb-4 mt-5">
+        <h2 class="text-warning ">
+            In Same Cinema
+        </h2>
+    </div>
+    @foreach (var movie in Model.Cinema.Movies)
+    {
+        <div onclick="details(@movie.Id)" style="background-image: url('/Images/@movie.ImgUrl');" class="onefilm text-center">
+            <p>@movie.Name</p>
+
+             
+            <div class="handel text-center">
+
+                @if (movie.MovieStatus == MovieStatus.Upcoming)
+                {
+                    <a style="background-color:green" class="btn ">
+                        @movie.MovieStatus
+                    </a>
+                }
+                else if (movie.MovieStatus == MovieStatus.Available)
+                {
+                    <a style="background-color:blue" class="btn ">
+                        @movie.MovieStatus
+                    </a>
+                    <a class="btn btn-outline-success">Book</a>
+                }
+                else
+                {
+                    <a style="background-color:red" class="btn ">
+                        @movie.MovieStatus
+                    </a>
+                }
+            </div>
+
+
+
+
+        </div>
+
+    }
+</div>

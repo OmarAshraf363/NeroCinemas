@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Movie>
+@{
+    Layout = "_DetailsLayout";
+}
+<div class="container-fluid mt-5 ">
+    <div class="container mb-5 mt-5">
+
+        <h2 class="text-warning ">
+            @ViewBag.name
+        </h2>
+    </div>
+    <div class="container d-flex flex-wrap align-items-center gap-3">
+
+        @foreach (var movie in Model)
+        {
+            if (movie.MovieStatus == MovieStatus.Available)
+            {
+                <div onclick="details(@movie.Id)" style="background-image: url('/images/@movie.ImgUrl');" class="onefilm text-center">
+                    <p>@movie.Name</p>
+
+                    @* <p>(@movie.Category.Name)</p> *@
+                    <div class="handel text-center">
+
+                        @if (movie.MovieStatus == MovieStatus.Upcoming)
+                        {
+                            <a style="background-color:green" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                        }
+                        else if (movie.MovieStatus == MovieStatus.Available)
+                        {
+                            <a style="background-color:blue" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                            <a class="btn btn-outline-success">Book</a>
+                        }
+                        else
+                        {
+                            <a style="background-color:red" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                        }
+                    </div>
+
+
+
+
+                </div>
+            }
+
+
+        }
+    </div>
+</div>
+
+

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Cinema>
+@{
+    Layout = "_DetailsLayout";
+}
+<div class="container-fluid mt-5">
+    <div class="container mb-5 mt-5">
+
+        <h2 class="text-warning ">
+            Cinema In Nero
+        </h2>
+    </div>
+    <div class="container d-flex flex-wrap align-items-center gap-3">
+
+        @foreach (var item in Model)
+        {
+            <div class="text-decoration-none" asp-action="Movies" asp-controller="Cinema" asp-route-id="@item.Id">
+                <div style="" class="collection text-center">
+                    <h4>@item.Name</h4>
+                    <h6>@item.Address</h6>
+
+                    <a asp-controller="Cinema" asp-action="Movies" asp-route-id="@item.Id" class="btn btn-outline-dark">Movies </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

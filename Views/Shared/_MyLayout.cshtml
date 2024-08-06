@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Nero</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Nero.styles.css" asp-append-version="true" />
+    <link href="~/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header class="container-fluid  ">
+        <div class="container d-flex justify-content-between align-items-center ">
+
+
+            <h2>Nero</h2>
+            <div class="container w-50 mb-0 mt-0  ">
+                <ul class=" nav d-flex  mb-0 mt-0 justify-content-between gap-5 align-items-center">
+                    <li>
+                        <a asp-action="Index" asp-controller="home"><i class="fa-solid fa-house me-1"></i> Home</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Category"><i class="fa-solid fa-layer-group me-1"></i>Categories</a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Cinema"><i class="fa-solid fa-video me-1"></i>Cinema</a>
+                    </li>
+                    <li>
+                        <a href=""><i class="fa-solid fa-phone-volume me-1"></i></i>Contact</a>
+                    </li>
+                </ul>
+
+
+            </div>
+            <form method="get" action="/Movie/Search">
+                <div class="d-flex align-content-center gap-2">
+                    <input type="search" name="text" class="form-control-m " placeholder="Search about movies" />
+                    <button type="submit" style="border-radius:2mm;" class=" pe-3 ps-3 btn btn-outline-secondary"><i class="fa-brands fa-searchengin"></i></button>
+                </div>
+            </form>
+        </div>
+
+    </header>
+   
+    <div class="container-fluid p-0">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*  <footer class="border-top footer text-muted">
+    <div class="container">
+    &copy; 2024 - Nero - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+    </footer> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

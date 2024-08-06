@@ -1,0 +1,145 @@
+﻿@model IEnumerable<Movie>
+<div class="container-fluid p-0 mb-4">
+    <div style="position:relative;" class="img container-fluid  ">
+        <div class="w-75">
+
+            <p style="z-index:100; color:rgb(228, 209, 97); width:40%; line-height:1.2; font-size:x-large" class=" ">
+                Get ready for an unforgettable cinematic experience with the latest and most thrilling movies!
+                Book your ticket now and be the first to witness the cinematic masterpieces !!
+            </p>
+            <div class="w-25 text-center">
+
+                <button class="btn btn-outline-warning">GetStart</button>
+                <button class="btn btn-outline-success">Book Now</button>
+            </div>
+        </div>
+        <div style="position:absolute;    bottom:-18%; left:10%; width:90%;" class="container-fluid mt-5">
+           @*  <div class="container mb-5 mt-5">
+
+                <h2 class="text-warning ">
+                    Collections
+                </h2>
+            </div> *@
+            <div class="container d-flex flex-wrap align-items-center gap-3">
+
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <a class="text-decoration-none" asp-action="CategoryMovies" asp-controller="category" asp-route-id="@category.Id">
+
+
+                        <div style="" class="collection text-center">
+                            <h5>@category.Name</h5>
+
+                        </div>
+                    </a>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin-block:100px" class="container-fluid ">
+    <div class="container mb-3">
+
+        <h2 class="text-warning ">
+            Some Available Movies
+        </h2>
+    </div>
+    <div class="container d-flex flex-wrap align-items-center gap-3">
+
+        @foreach (var movie in Model)
+        {
+            if (movie.MovieStatus == MovieStatus.Available)
+            {
+                <div onclick="details(@movie.Id)" style="background-image: url('images/@movie.ImgUrl');" class="onefilm text-center">
+                    <p>@movie.Name</p>
+
+                    @* <p>(@movie.Category.Name)</p> *@
+                    <div class="handel text-center">
+
+                        @if (movie.MovieStatus == MovieStatus.Upcoming)
+                        {
+                            <a style="background-color:green" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                        }
+                        else if (movie.MovieStatus == MovieStatus.Available)
+                        {
+                            <a style="background-color:blue" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                            <a class="btn btn-outline-success">Book</a>
+                        }
+                        else
+                        {
+                            <a style="background-color:red" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                        }
+                    </div>
+
+
+
+
+                </div>
+            }
+
+
+        }
+    </div>
+</div>
+
+
+
+<div class="container-fluid mt-5">
+    <div class="container d-flex flex-wrap align-items-center gap-3">
+
+        @foreach (var movie in Model)
+        {
+            if (movie.MovieStatus == MovieStatus.Upcoming)
+            {
+                <div class="container mb-3 ">
+
+                    <h2 class="text-warning ">
+                        Soon
+                    </h2>
+                </div>
+                <div onclick="details(@movie.Id)" style="background-image: url('images/@movie.ImgUrl');" class="onefilm text-center">
+                    <p>@movie.Name</p>
+
+                    @* <p>(@movie.Category.Name)</p> *@
+                    <div class="handel text-center">
+
+                        @if (movie.MovieStatus == MovieStatus.Upcoming)
+                        {
+                            <a style="background-color:green" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                        }
+                        else if (movie.MovieStatus == MovieStatus.Available)
+                        {
+                            <a style="background-color:blue" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                            <a class="btn btn-outline-success">Book</a>
+                        }
+                        else
+                        {
+                            <a style="background-color:red" class="btn ">
+                                @movie.MovieStatus
+                            </a>
+                        }
+                    </div>
+
+
+
+
+                </div>
+            }
+
+
+        }
+    </div>
+</div>
+
+

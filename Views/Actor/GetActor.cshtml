@@ -1,0 +1,29 @@
+﻿@model Actor
+@{
+    Layout = "_DetailsLayout";
+}
+<div class="container-fluid p-0 mb-4">
+
+    <div class="test container-fluid pe-4 ">
+        <img style="border-radius:3mm; width:400px; height:400px;" src="/cast/@Model.ProfilePucture" alt="Alternate Text" />
+        <div style="width:40%; " class="p-3 ">
+
+            <p style="z-index:100; width:70%; color:rgb(228, 209, 97);  line-height:1.2; font-size:x-large" class=" ">
+                @Model.FirstName @Model.LastName
+            </p>
+            <p style="z-index:100; width:75%;  color:#eee; line-height:1.2;" class=" ">
+                @Model.News
+            </p>
+            @foreach (var movie in ViewBag.movies)
+            {
+                <h6><a asp-action="Details" asp-controller="Movie" asp-route-id="@movie.Id">  @movie.Name</a></h6>
+            }
+            @* <h5 style="z-index:100;color:#ccc;  line-height:1.2;" class=" ">
+            Category : <a class="text-danger text-decoration-none" asp-action="">@Model.Category.Name</a>
+            </h5>
+            <h5 style="z-index:100;  color:#ccc; line-height:1.2; " class=" ">
+            Cinema : <a class="text-danger text-decoration-none" asp-action="">@Model.Cinema.Name</a>
+            </h5>
+            <h6 style="color:@(Model.MovieStatus==MovieStatus.Expired? "red": "Blue")">@Model.MovieStatus</h6> *@
+        </div>
+    </div>

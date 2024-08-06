@@ -1,0 +1,207 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+* {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #1d2732;
+}
+
+h1, h2, h3, h4 {
+    color: rgb(228, 209, 97);
+}
+h5,h6{
+    color:#c5c5c5;
+}
+header{
+    
+}
+header .nav a {
+    color: #ccc;
+    text-decoration: none;
+    position: relative;
+}
+
+header .nav li a:before {
+    content: ' ';
+    width: 0%;
+    height: 0px;
+    transition: 0.3s;
+    position: absolute;
+    bottom: -10px;
+    left: 0px;
+}
+header .nav a:hover{
+    color:#fff;
+}
+header .nav a:hover:before {
+    width: 100%;
+    height: 2px;
+    background-color: rgb(228, 209, 97);
+}
+
+header {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 15px
+}
+
+    header ul {
+        padding: 10px 20px;
+    }
+
+    header input {
+        background-color: #1d2732;
+        border: 1px solid #ccc;
+        padding: 7px 10px;
+        color: #ccc;
+        border-radius: 2mm
+    }
+    main{
+        height:100vh
+    }
+.test {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    padding-left: 70px;
+    padding-block: 70px;
+    align-items: flex-start;
+    align-self: stretch;
+    gap: 50px;
+    background-color: rgb(3, 3, 3);
+    border-radius: 0px;
+    box-shadow: rgb(75, 134, 189) 0px 5px 5px;
+    border: 0px;
+    
+    background-repeat: no-repeat;
+    background-size: cover;
+    position:relative;
+}
+    .test:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(3, 3, 3, 0.7);
+        border-radius: 5px;
+        transition: opacity 0.3s;
+        z-index: 1;
+        opacity: 1;
+    }
+    .test div,.test img{
+        z-index:1000;
+    }
+    .img {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background-image: url('../images/unsplash-4.webp');
+        background-repeat: no-repeat;
+        background-size: contain;
+        display: flex;
+        
+        padding-left: 100px;
+        align-items: center;
+        flex-shrink: 1;
+        flex-grow: 1;
+        align-self: stretch;
+        height: 500px;
+        background-color: rgb(3, 3, 3);
+        border-radius: 0px;
+        box-shadow: rgb(75, 134, 189) 0px 5px 5px;
+        border: 0px;
+    }
+
+.onefilm,.collection {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+    flex-shrink: 1;
+    cursor:pointer;
+    align-self: stretch;
+    width: 202px;
+    height: 247px;
+    transition: 0.3s;
+    background-color: rgba(3, 3, 3, 0.7);
+    border-radius: 5px;
+    box-shadow: rgb(75, 134, 189) 0px 5px 5px;
+    border: 0px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 20px;
+    
+}
+.collection {
+    color: black;
+    width: 170px;
+    height: 140px;
+    border-radius: 30px;
+}
+
+.onefilm::before, .collection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(3, 3, 3, 0.7);
+    border-radius: 5px;
+    transition: opacity 0.3s;
+    z-index: 1;
+    opacity: 0;
+}
+    .collection::before {
+        border-radius: 30px;
+    }
+    .collection h5{
+        color:#505050;
+    }
+    .collection:hover h5 ,
+    .collection:hover a 
+    {
+        visibility:visible;
+        color:#ccc;
+        z-index:5;
+    }
+    .collection a{
+        visibility:hidden;
+    }
+    .onefilm p {
+        width: 50%;
+    }
+    .onefilm p,
+    .onefilm .handel {
+        position: relative;
+        display: none;
+        z-index: 5;
+    }
+
+.onefilm:hover::before, .collection:hover::before {
+    opacity: 1;
+}
+
+    .onefilm:hover p,
+    .onefilm:hover .handel {
+        color: white;
+        display: block;
+    }
