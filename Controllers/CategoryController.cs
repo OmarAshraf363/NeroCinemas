@@ -7,11 +7,11 @@ namespace Nero.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly CategoryRepository _repository;
-        private readonly MovieRepository _movieRepository;
+        private readonly ICategoryRepository _repository;
+        private readonly IMovieRepository _movieRepository;
 
 
-        public CategoryController(CategoryRepository repository, MovieRepository movieRepository)
+        public CategoryController(ICategoryRepository repository, IMovieRepository movieRepository)
         {
             _repository = repository;
             _movieRepository = movieRepository;

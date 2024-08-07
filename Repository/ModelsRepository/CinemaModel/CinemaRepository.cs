@@ -4,7 +4,7 @@ using Nero.Repository.IRepository;
 
 namespace Nero.Repository.ModelsRepository.CinemaModel
 {
-    public class CinemaRepository : GenralRepository<Cinema>
+    public class CinemaRepository : GenralRepository<Cinema>, ICinemaRepository
     {
         public CinemaRepository(AppDbContext context) : base(context) { }
        

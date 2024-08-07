@@ -12,13 +12,13 @@ namespace Nero.Controllers
     public class HomeController : Controller
     {
 
-        private readonly MovieRepository _movieRepo;
-        private readonly CategoryRepository _categoryRepo;
+        private readonly IMovieRepository _movieRepo;
+        private readonly ICategoryRepository _categoryRepo;
 
 
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, MovieRepository movieRepo, CategoryRepository categoryRepo)
+        public HomeController(ILogger<HomeController> logger, IMovieRepository movieRepo, ICategoryRepository categoryRepo)
         {
             _logger = logger;
 

@@ -5,7 +5,7 @@ using Nero.Repository.IRepository;
 
 namespace Nero.Repository.ModelsRepository.MovieModel
 {
-    public class MovieRepository:GenralRepository<Movie>
+    public class MovieRepository:GenralRepository<Movie>, IMovieRepository
     {
 
         public MovieRepository(AppDbContext context) : base(context) { }

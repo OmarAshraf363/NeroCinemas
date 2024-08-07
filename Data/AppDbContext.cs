@@ -11,13 +11,17 @@ namespace Nero.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<ActorMovie> ActorsMovie { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
         {
-            base.OnConfiguring(optionsBuilder);
-            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            var connection = builder.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(connection);
+            
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+        //    var connection = builder.GetConnectionString("DefaultConnection");
+        //    optionsBuilder.UseSqlServer(connection);
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -8,10 +8,10 @@ namespace Nero.Controllers
 {
     public class ActorController : Controller
     {
-        private readonly ActorRepository actorRepository;
-        private readonly ActorMoviesRepository actorMoviesRepository;
+        private readonly IActorRepository actorRepository;
+        private readonly IActiveMoviesRepository actorMoviesRepository;
 
-        public ActorController(ActorRepository actorRepository,  ActorMoviesRepository actorMoviesRepository)
+        public ActorController(IActorRepository actorRepository, IActiveMoviesRepository actorMoviesRepository)
         {
             this.actorRepository = actorRepository;
           

@@ -7,8 +7,8 @@ namespace Nero.Controllers
 {
     public class MovieController : Controller
     {
-        private readonly MovieRepository _movieRepo;
-        public MovieController(MovieRepository movieRepo)
+        private readonly IMovieRepository _movieRepo;
+        public MovieController(IMovieRepository movieRepo)
         {
             _movieRepo = movieRepo;
         }
@@ -19,7 +19,7 @@ namespace Nero.Controllers
         }
         public IActionResult Details(int id)
         {
-            var item=_movieRepo.GetMovieandCategoryById(id);
+            var item = _movieRepo.GetMovieandCategoryById(id);
             return View(item);
         }
         public IActionResult Search(string text)
@@ -27,12 +27,20 @@ namespace Nero.Controllers
 
             if (string.IsNullOrEmpty(text))
             {
-                return NotFound();
+                return View("NotFound");
             }
             else
             {
-                var movies = _movieRepo.GetAll().Where(e => e.Name.Contains(text));
-                return View(movies);
+                var movies = _movieRepo.GetAll().Where(e => e.Name.Contains(text)).ToList();
+                if (movies.Count == 0)
+                {
+                    return View("NotFound");
+                }
+                else
+                {
+                    return View(movies);
+
+                }
 
             }
         }

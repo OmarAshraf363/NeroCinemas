@@ -6,10 +6,10 @@ namespace Nero.Controllers
 {
     public class CinemaController : Controller
     {
-        private readonly CinemaRepository _cinemaRepository;
-        private readonly MovieRepository movieRepository;
+        private readonly ICinemaRepository _cinemaRepository;
+        private readonly IMovieRepository movieRepository;
 
-        public CinemaController(CinemaRepository cinemaRepository, MovieRepository movieRepository)
+        public CinemaController(ICinemaRepository cinemaRepository, IMovieRepository movieRepository)
         {
             _cinemaRepository = cinemaRepository;
             this.movieRepository = movieRepository;
