@@ -1,26 +1,81 @@
-﻿@model IEnumerable<Cinema>
+﻿@model Nero.ViewModel.CinemaVM
 @{
     Layout = "_DetailsLayout";
 }
+
+<!-- Container for all Cinemas -->
 <div class="container-fluid mt-5">
-    <div class="container mb-5 mt-5">
-
-        <h2 class="text-warning ">
-            Cinema In Nero
+    <div class="container d-flex justify-content-between align-items-center mb-5 mt-5">
+        <h2 class="text-warning">
+            All Cinemas
         </h2>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCinemaModal">Create New</button>
     </div>
+
+    <!-- Categories grid -->
     <div class="container d-flex flex-wrap align-items-center gap-3">
-
-        @foreach (var item in Model)
+        @foreach (var item in Model.Cinemas)
         {
-            <div class="text-decoration-none" asp-action="Movies" asp-controller="Cinema" asp-route-id="@item.Id">
-                <div style="" class="collection text-center">
-                    <h4>@item.Name</h4>
-                    <h6>@item.Address</h6>
-
-                    <a asp-controller="Cinema" asp-action="Movies" asp-route-id="@item.Id" class="btn btn-outline-dark">Movies </a>
+            <div class="card text-white bg-dark shadow-sm mb-4" style="width: 18rem;">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.Name</h5>
+                    <h6 class="card-subtitle">@item.Address</h6>
+                    <div class="mt-3 d-flex justify-content-around">
+                        <a asp-controller="Category" asp-action="CategoryMovies" asp-route-id="@item.Id" class="btn btn-outline-warning">View Movies</a>
+                        <a class="btn btn-outline-primary" href="javascript:void(0)" onclick="openEditModal(@item.Id,'Cinema')">Edit</a>
+                        <button class="btn btn-outline-danger" onclick="deleteIt(@item.Id,'Cinema')" @* data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-category-id="@item.Id" *@>Delete</button>
+                    </div>
                 </div>
             </div>
         }
     </div>
 </div>
+
+<!-- Modal to add cinema -->
+<div class="modal fade" id="addCinemaModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white shadow-lg">
+            <form id="formCinema" method="post" asp-action="Create">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Create New Cinema</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="Name">Name</label>
+                        <input class="form-control bg-dark text-light" asp-for="Name" />
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="Description">Description</label>
+                        <input class="form-control bg-dark text-light" asp-for="Description" />
+                        <span class="text-danger" asp-validation-for="Description"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="Address">Address</label>
+                        <input class="form-control bg-dark text-light" asp-for="Address" />
+                        <span class="text-danger" asp-validation-for="Address"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="CinemaLogo">CinemaLogo</label>
+                        <input class="form-control bg-dark text-light" asp-for="CinemaLogo" />
+                        <span class="text-danger" asp-validation-for="CinemaLogo"></span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="allConfirm('formCinema')" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal to edit cinema -->
+<div class="modal fade" id="editMovie" tabindex="-1" aria-labelledby="editMovieLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark">
+        </div>
+    </div>
+</div>
+

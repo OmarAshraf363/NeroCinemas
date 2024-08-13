@@ -3,7 +3,7 @@ using Nero.Repository.IRepository;
 
 namespace Nero.Repository.ModelsRepository.ActorMoviesModel
 {
-    public interface IActiveMoviesRepository:IGenralRepository<ActorMovie>
+    public interface ActiveMoviesRepository:IGenralRepository<ActorMovie>
     {
     }
 }

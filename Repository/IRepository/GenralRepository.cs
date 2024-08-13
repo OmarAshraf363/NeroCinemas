@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nero.Data;
+using System.Linq.Expressions;
 
 namespace Nero.Repository.IRepository
 {
@@ -17,10 +18,7 @@ namespace Nero.Repository.IRepository
         {
             return dbSet.AsQueryable();
         }
-        public virtual T? GetById(int id)
-        {
-            return dbSet.Find(id);
-        }
+       
 
         public void Add(T entity)
         {
@@ -38,6 +36,7 @@ namespace Nero.Repository.IRepository
             if (entity != null)
             {
                 dbSet.Remove(entity);
+                Save();
             }
         }
 
@@ -45,5 +44,26 @@ namespace Nero.Repository.IRepository
         {
             context.SaveChanges();
         }
+      
+
+        public IEnumerable<T>? Get(Expression<Func<T, bool>> expression , params Expression<Func<T, object>> []expression2)
+        {
+            IQueryable<T> query = dbSet.Where(expression);
+            if (expression2 != null&&expression2.Length>0)
+            {
+                for (int i=0;i<expression2.Length;i++)
+                {
+                  query = query.Include(expression2[i]);
+
+                }
+                return query;
+            }
+            else
+            {
+                return dbSet.Where(expression);
+            }
+           
+        }
+
     }
 }

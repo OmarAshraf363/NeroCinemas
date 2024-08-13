@@ -11,9 +11,10 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public MovieStatus MovieStatus { get; set; }
+        public int? NumOfVisit { get; set; }
 
         //Relations
-        public int CategoryId {  get; set; }
+        public int CategoryId {  get; set; }=0;
         public int CinemaId {  get; set; }
         public Cinema Cinema {  get; set; }
         public Category Category {  get; set; }

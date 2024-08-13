@@ -1,0 +1,161 @@
+﻿@model Nero.ViewModel.MovieVM
+
+@{
+    ViewData["Title"] = "Movies List";
+    Layout = "_DetailsLayout";
+}
+
+
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-warning">@ViewData["Title"]</h1>
+
+        <!--Make DropDown here to filter-->
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Filter by Status
+            </button>
+            <ul class="dropdown-menu  " aria-labelledby="filterDropdown">
+                <li><a class="dropdown-item" href="?status=Available">Available</a></li>
+                <li><a class="dropdown-item" href="?status=Upcoming">Upcoming</a></li>
+                <li><a class="dropdown-item" href="?status=Expired">Expired</a></li>
+                <li><a class="dropdown-item" href="?">All</a></li>
+            </ul>
+        </div>
+
+
+        <a asp-action="Create" class="btn btn-success" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovie">Create New</a>
+    </div>
+
+    <div class="movie-table">
+        @foreach (var movie in Model.Movies)
+        {
+
+
+            <div class="movie-card">
+                <img src="/Images/@movie.ImgUrl" alt="@movie.Name">
+                <div class="movie-info">
+                    <h5>@movie.Name</h5>
+                    <p>@movie.Description</p>
+                    <p class="badge-status
+                            @(movie.MovieStatus == MovieStatus.Available ? "badge-available" :
+                              movie.MovieStatus == MovieStatus.Upcoming ? "badge-upcoming" :
+                              "badge-expired")">
+                        @movie.MovieStatus
+                    </p>
+                    <p>@movie.Price.ToString("C")</p>
+                    <div class="btn-group">
+                        <a href="javascript:void(0)" onclick="openEditModal(@movie.Id,'Movie')" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-info btn-sm">Details</a>
+                        <a onclick="deleteIt(@movie.Id,'Movie')" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+
+        }
+    </div>
+</div>
+
+
+
+<!--Modal To Add-->
+<div class="  modal fade" id="addMovie" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class=" bg-dark modal-content">
+            <form id="formMovie" method="post" asp-action="Create">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create New Movie</h5>
+                    <button type="button" onclick="test()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label class="form-label text-light" asp-for="Name"> Name</label>
+                        <input  class="form-control  bg-dark" asp-for="Name" />
+                        <span  class="text-danger" asp-validation-for="Name"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label text-light" asp-for="Description">Description</label>
+                        <input class="form-control  bg-dark" asp-for="Description" />
+                        <span class="text-danger" asp-validation-for="Description"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label text-light" asp-for="Price">Price</label>
+                        <input class="form-control  bg-dark" asp-for="Price" />
+                        <span class="text-danger" asp-validation-for="Price"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label text-light" asp-for="StartDate">StartDate</label>
+                        <input class="form-control  bg-dark" asp-for="StartDate" />
+                        <span class="text-danger" asp-validation-for="StartDate"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label text-light" asp-for="EndDate">EndDate</label>
+                        <input class="form-control  bg-dark" asp-for="EndDate" />
+                        <span class="text-danger" asp-validation-for="EndDate"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label text-light" asp-for="ImgUrl">ImgUrl</label>
+                        <input class="form-control  bg-dark" asp-for="ImgUrl" />
+                        <span class="text-danger" asp-validation-for="ImgUrl"></span>
+
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label text-light" asp-for="TrailerUrl">TrailerUrl</label>
+                        <input class="form-control  bg-dark" asp-for="TrailerUrl" />
+                        <span class="text-danger" asp-validation-for="TrailerUrl"></span>
+
+                    </div>
+                    <select asp-for="CategoryId">
+                        @foreach (var category in Model.Categories)
+                        {
+                        <option value="@category.Id">@category.Name</option>
+                            
+                        }
+                    </select>
+                    <select asp-for="CinemaId">
+                        @foreach (var cinema in Model.CinemaList)
+                        {
+                            <option value="@cinema.Id">@cinema.Name</option>
+
+                        }
+                    </select>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="allConfirm('formMovie')" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editMovie" tabindex="-1" aria-labelledby="editMovieLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark">
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

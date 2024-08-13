@@ -1,5 +1,7 @@
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Nero.Data;
+using Nero.Migrations;
 using Nero.Models;
 using Nero.Repository.IRepository;
 using Nero.Repository.ModelsRepository.ActorModel;
@@ -19,23 +21,24 @@ namespace Nero
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+           builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6; 
+                options.Password.RequiredUniqueChars = 1;
+            });
+
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-            builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-            builder.Services.AddScoped<IActorRepository, ActorRepository>();
-            builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
-            builder.Services.AddScoped<IActiveMoviesRepository,ActorMoviesRepository>();
+      
 
-            //builder.Services.AddDbContext<AppDbContext>();
-            //builder.Services.AddScoped(typeof(IGenralRepository<>), typeof(GenralRepository<>));
-            //builder.Services.AddScoped<CategoryRepository>();
-            //builder.Services.AddScoped<ActorRepository>();
-            //builder.Services.AddScoped< MovieRepository>();
-            //builder.Services.AddScoped< CinemaRepository>();
-            //builder.Services.AddScoped<ActorMoviesRepository>();
 
 
             var app = builder.Build();

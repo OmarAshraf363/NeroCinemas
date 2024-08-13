@@ -1,0 +1,56 @@
+﻿@model Cinema
+
+@{
+    ViewData["Title"] = "_EditCinmaPartial";
+}
+
+
+<div class="modal-content bg-dark">
+
+    <form id="editCinema" asp-action="Edit">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editMovieLabel">Edit Cinema</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+               
+                <input asp-for="Id" type="hidden" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label text-light"></label>
+                <input asp-for="Name" class="form-control bg-dark " />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label text-light"></label>
+                <input asp-for="Description" class="form-control bg-dark" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="CinemaLogo" class="control-label text-light"></label>
+                <input asp-for="CinemaLogo" class="form-control bg-dark" />
+                <span asp-validation-for="CinemaLogo" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Address" class="control-label text-light"></label>
+                <input asp-for="Address" class="form-control bg-dark" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" onclick="allConfirm('editCinema')" class="btn btn-primary">Save changes</button>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

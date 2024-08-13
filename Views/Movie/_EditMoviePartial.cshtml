@@ -1,0 +1,77 @@
+﻿@model Nero.ViewModel.MovieVM
+
+<div class="modal-content bg-dark">
+    <form id="editMovieForm" method="post" asp-action="Edit">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editMovieLabel">Edit Movie</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group mb-3">
+                <input asp-for="Id" hidden />
+                <label class="form-label text-light" asp-for="Name">Name</label>
+                <input class="form-control bg-dark " asp-for="Name" />
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="Description">Description</label>
+                <input class="form-control bg-dark" asp-for="Description" />
+                <span class="text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="Price">Price</label>
+                <input class="form-control bg-dark" asp-for="Price" />
+                <span class="text-danger" asp-validation-for="Price"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="StartDate">StartDate</label>
+                <input class="form-control bg-dark" asp-for="StartDate" />
+                <span class="text-danger" asp-validation-for="StartDate"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="EndDate">EndDate</label>
+                <input class="form-control bg-dark" asp-for="EndDate" />
+                <span class="text-danger" asp-validation-for="EndDate"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="ImgUrl">ImgUrl</label>
+                <input class="form-control bg-dark" asp-for="ImgUrl" />
+                <span class="text-danger" asp-validation-for="ImgUrl"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="TrailerUrl">TrailerUrl</label>
+                <input class="form-control bg-dark" asp-for="TrailerUrl" />
+                <span class="text-danger" asp-validation-for="TrailerUrl"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="CategoryId">Category</label>
+                <select class="form-control bg-dark" asp-for="CategoryId">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label text-light" asp-for="CinemaId">Cinema</label>
+                <select class="form-control bg-dark " asp-for="CinemaId">
+                    @foreach (var cinema in Model.CinemaList)
+                    {
+                        <option value="@cinema.Id">@cinema.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" onclick="allConfirm('editMovieForm')" class="btn btn-primary">Save changes</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

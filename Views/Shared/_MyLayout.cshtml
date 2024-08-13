@@ -26,8 +26,15 @@
                     <li>
                         <a asp-action="Index" asp-controller="Cinema"><i class="fa-solid fa-video me-1"></i>Cinema</a>
                     </li>
-                    <li>
-                        <a href=""><i class="fa-solid fa-phone-volume me-1"></i></i>Contact</a>
+                    <li class="nav-item  dropdown">
+                        <a class="nav-link  dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
+                        <div class="dropdown-menu bg-dark" style="">
+                            <a asp-action="Index" asp-controller="Category" class="nav-link ">Category</a>
+
+                            <a asp-action="Index" asp-controller="Cinema" class="nav-link ">Cinma</a>
+
+                            <a asp-action="Index" asp-controller="Movie" class="nav-link ">Movies</a>
+                        </div>
                     </li>
                 </ul>
 
@@ -56,6 +63,7 @@
     </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -12,26 +12,20 @@ namespace Nero.Controllers
     public class HomeController : Controller
     {
 
-        private readonly IMovieRepository _movieRepo;
-        private readonly ICategoryRepository _categoryRepo;
-
+        private readonly IUnitOfWork unitOfWork;
 
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IMovieRepository movieRepo, ICategoryRepository categoryRepo)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
-
-
-            _movieRepo = movieRepo;
-            _categoryRepo = categoryRepo;
+            this.unitOfWork = unitOfWork;
+            
         }
 
         public IActionResult Index()
         {
-            var allMovies = _movieRepo.GetAll().Include(e => e.Category);
-            
-
+            var allMovies =unitOfWork.MovieRepository.GetAll().Include(e => e.Category);
 
             foreach (var movie in allMovies)
             {
@@ -51,10 +45,9 @@ namespace Nero.Controllers
 
                 }
 
-            }
-            var allCategories = _categoryRepo.GetAll();
-            ViewBag.Categories= allCategories;
-            _movieRepo.Save();
+            } 
+            ViewBag.Categories= unitOfWork.CategoryRepository.GetAll();
+            unitOfWork.CategoryRepository.Save();
            
             return View(allMovies);
         }

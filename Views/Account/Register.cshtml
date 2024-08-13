@@ -1,0 +1,63 @@
+﻿@model Nero.ViewModel.AppUserVM
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_AccountLayout";
+}
+
+
+<div class="container d-flex h-100 justify-content-center align-items-center">
+
+    <form id="registerForm" class="w-25 " asp-action="Register" method="post">
+        <div class="mb-3 text-center">
+            <h3 class="text-light">Create New Account </h3>
+            <p class="text-warning">Your Communication must be vailid  </p>
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group ">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group ">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" placeholder="Email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group ">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" class="form-control" placeholder="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group ">
+            <label asp-for="ConfirmPassword" class="control-label"></label>
+            <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+        <div class="form-group ">
+            <label asp-for="Address" class="control-label"></label>
+            <input asp-for="Address" class="form-control" placeholder="Address"/>
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="w-100  d-flex gap-2 align-items-center" >
+            <button type="submit" class="btn btn-outline-success">Create</button>
+            
+                <a asp-action="Login">Already have account..?</a>
+            
+        </div>
+    </form>
+
+
+
+
+</div>
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

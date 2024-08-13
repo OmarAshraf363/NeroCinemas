@@ -170,6 +170,7 @@ header {
     z-index: 1;
     opacity: 0;
 }
+
     .collection::before {
         border-radius: 30px;
     }
@@ -199,9 +200,94 @@ header {
 .onefilm:hover::before, .collection:hover::before {
     opacity: 1;
 }
+.onefilm:hover,
+.collection:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-    .onefilm:hover p,
-    .onefilm:hover .handel {
-        color: white;
-        display: block;
+.onefilm:hover p,
+.onefilm:hover .handel {
+    color: white;
+    display: block;
+}
+
+
+#registerForm .part input {
+    background-color: #303030;
+    width: 100%;
+    border: 1px solid #c12c12;
+    border-radius: 2mm;
+    color: #ccc;
+    transition: 0.5s;
+    
+}
+#registerForm div{
+    margin-bottom:30px;
+}
+#registerForm label {
+    color: #eee;
+    transition: 0.5s;
+}
+
+
+.movie-table {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    color: white;
+}
+
+.movie-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .movie-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
+
+    .movie-card img {
+        width: 100%;
+        height: auto;
+    }
+
+.movie-info {
+    padding: 1rem;
+}
+
+    .movie-info h5 {
+        margin-bottom: 0.5rem;
+    }
+
+.badge-status {
+    display: inline-block;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    color: #fff;
+}
+
+.badge-available {
+    background-color: #28a745;
+}
+
+.badge-upcoming {
+    background-color: #ffc107;
+}
+
+.badge-expired {
+    background-color: #dc3545;
+}
+
+.btn-group a {
+    margin-right: 0.5rem;
+}
+
+#formMovie input, #editMovieForm input, #editMovieForm select, #editCinema input {
+    color: #ccc;
+}
+
+
