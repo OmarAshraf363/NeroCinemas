@@ -7,7 +7,10 @@
 
 
 <div class="container d-flex h-100 justify-content-center align-items-center">
-
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
     <form id="registerForm" class="w-25 " asp-action="Register" method="post">
         <div class="mb-3 text-center">
             <h3 class="text-light">Create New Account </h3>
@@ -40,9 +43,9 @@
             <span asp-validation-for="Address" class="text-danger"></span>
         </div>
         <div class="w-100  d-flex gap-2 align-items-center" >
-            <button type="submit" class="btn btn-outline-success">Create</button>
-            
-                <a asp-action="Login">Already have account..?</a>
+            <button type="submit" class="btn btn-outline-primary">Create</button>
+            <span>Or</span>
+            <a asp-action="Login" class="btn btn-primary">I Have Account !! </a>
             
         </div>
     </form>

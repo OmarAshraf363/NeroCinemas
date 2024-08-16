@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Nero.styles.css" asp-append-version="true" />
     <link href="~/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/test.css" rel="stylesheet" />
 </head>
 <body>
     <header class="container-fluid  ">
@@ -16,26 +17,44 @@
 
             <h2>Nero</h2>
             <div class="container w-50 mb-0 mt-0  ">
-                <ul class=" nav d-flex  mb-0 mt-0 justify-content-between gap-5 align-items-center">
-                    <li>
-                        <a asp-action="Index" asp-controller="home"><i class="fa-solid fa-house me-1"></i> Home</a>
-                    </li>
-                    <li>
-                        <a asp-action="Index" asp-controller="Category"><i class="fa-solid fa-layer-group me-1"></i>Categories</a>
-                    </li>
-                    <li>
-                        <a asp-action="Index" asp-controller="Cinema"><i class="fa-solid fa-video me-1"></i>Cinema</a>
-                    </li>
-                    <li class="nav-item  dropdown">
-                        <a class="nav-link  dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
-                        <div class="dropdown-menu bg-dark" style="">
-                            <a asp-action="Index" asp-controller="Category" class="nav-link ">Category</a>
+                <ul class=" nav d-flex  mb-0 mt-0  gap-5 align-items-center">
+                    @if (User.IsInRole("Customar"))
+                    {
 
-                            <a asp-action="Index" asp-controller="Cinema" class="nav-link ">Cinma</a>
+                        <li>
+                            <a asp-action="Index" asp-controller="home"><i class="fa-solid fa-house me-1"></i> Home</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="Category"><i class="fa-solid fa-layer-group me-1"></i>Categories</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="Movie"><i class="fa-solid fa-video me-1"></i>Movies</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="Cinema"><i class="fa-solid fa-video me-1"></i>Cinema</a>
+                        </li>
+                        <li>
+                            <a asp-action="Contact" asp-controller="Account"><i class="fa-solid fa-circle-nodes me-1"></i>Contact</a>
+                        </li>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a asp-action="Index" asp-controller="home"><i class="fa-solid fa-house me-1"></i> Home</a>
+                        </li>
+                        <li class="nav-item  dropdown">
+                            <a class="nav-link  dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
+                            <div class="dropdown-menu bg-dark" style="">
+                                <a asp-action="Index" asp-controller="Category" class="nav-link ">Category</a>
 
-                            <a asp-action="Index" asp-controller="Movie" class="nav-link ">Movies</a>
-                        </div>
-                    </li>
+                                <a asp-action="Index" asp-controller="Cinema" class="nav-link ">Cinma</a>
+
+                                <a asp-action="Index" asp-controller="Movie" class="nav-link ">Movies</a>
+                            </div>
+                        </li>
+
+                    }
+
                 </ul>
 
 
@@ -46,10 +65,18 @@
                     <button type="submit" style="border-radius:2mm;" class=" pe-3 ps-3 btn btn-outline-secondary"><i class="fa-brands fa-searchengin"></i></button>
                 </div>
             </form>
+            <ul class=" nav d-flex  mb-0 mt-0 justify-content-between gap-5 align-items-center">
+                <li class="nav-item">
+                    <a class="btn btn-outline-danger rounded-2 ms-2" asp-action="Logout" asp-controller="Account"> Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a style="font-size:20px;" class="  " asp-area="" asp-controller="ShoppingCart" asp-action="Index"><i style="color:black" class="fa-solid fa-cart-shopping"></i> </a>
+                </li>
+            </ul>
         </div>
 
     </header>
-   
+
     <div class="container-fluid p-0">
         <main role="main" class="pb-3">
             @RenderBody()

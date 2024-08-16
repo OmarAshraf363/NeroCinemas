@@ -6,25 +6,35 @@ using Nero.Repository.ModelsRepository.CategoryModel;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Nero.Repository.ModelsRepository.MovieModel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Nero.Controllers
 {
+    [Authorize(Roles ="Admin,Customar")]
     public class HomeController : Controller
     {
-
+        
         private readonly IUnitOfWork unitOfWork;
+        private readonly UserManager<AppUser> userManager;
 
         private readonly ILogger<HomeController> _logger;
+        private readonly SignInManager<AppUser> signInManager;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _logger = logger;
             this.unitOfWork = unitOfWork;
-            
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public IActionResult Index()
         {
+            var user = signInManager.IsSignedIn(principal:signInManager.Context.User);
+            if (user)
+            {
+
             var allMovies =unitOfWork.MovieRepository.GetAll().Include(e => e.Category);
 
             foreach (var movie in allMovies)
@@ -50,6 +60,11 @@ namespace Nero.Controllers
             unitOfWork.CategoryRepository.Save();
            
             return View(allMovies);
+            }
+            else
+            {
+                return RedirectToAction("Login","Account");
+            }
         }
 
         public IActionResult Privacy()

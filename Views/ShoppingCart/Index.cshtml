@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Nero.Models.OrderItem>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+   
+}
+
+
+
+<div class="container cart">
+    <h1 class="mt-4">Shopping Cart</h1>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+    @if (!Model.Any())
+    {
+        <p>Your cart is empty.</p>
+    }
+    else
+    {
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                @foreach (var item in Model)
+                {
+                    <tr data-orderitem-id="@item.Id">
+                        <td>@item.Movie.Name</td>
+                        <td class="quantity-controls">
+                            <button class="btn btn-sm btn-dark" onclick="updateQuantity(@item.Id, -1)"><i class="fa-solid fa-minus"></i></button>
+                            <span id="quantity-@item.Id">@item.Quantity</span>
+                            <button class="btn btn-sm btn-dark" onclick="updateQuantity(@item.Id, 1)"><i class="fa-solid fa-plus"></i></button>
+                        </td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td id="total-@item.Id">@item.TotalPrice.ToString("C")</td>
+                        <td>
+
+                            <a onclick="deleteIt(@item.Id,'ShoppingCart')" class="btn btn-danger">Remove</a>
+                           
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <h4>Total: <span id="grand-total">@Model.Sum(i => i.TotalPrice).ToString("C")</span></h4>
+            <a asp-action="Checkout" class="btn btn-success">Proceed to Checkout</a>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Add More Movies  </a>
+        </div>
+    }
+</div>
+
+
+<script>
+    function updateQuantity(orderItemId, change) {
+        $.ajax({
+            url: '@Url.Action("UpdateQuantity", "ShoppingCart")',
+            type: 'POST',
+            data: {
+                id: orderItemId,
+                change: change
+            },
+            success: function (response) {
+                $('#quantity-' + orderItemId).text(response.newQuantity);
+                $('#total-' + orderItemId).text(response.newTotalPrice);
+                $('#grand-total').text(response.grandTotal);
+            },
+            error: function () {
+                alert('An error occurred while updating the quantity.');
+            }
+        });
+    }
+</script>

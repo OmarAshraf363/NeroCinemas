@@ -9,13 +9,21 @@ namespace Nero.Controllers
     {
         private readonly UserManager<AppUser> userManager;
         private readonly  SignInManager<AppUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
         }
 
+        //public async Task<IActionResult> AddRole()
+        //{
+        //   await roleManager.CreateAsync(new IdentityRole("Admin"));
+        //    await roleManager.CreateAsync(new IdentityRole("Customar"));
+        //    return Content("addedd");
+        //}
         public IActionResult Index()
         {
             return View();
@@ -39,6 +47,7 @@ namespace Nero.Controllers
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await userManager.AddToRoleAsync(user,"Customar");
                     return RedirectToAction("Index", "Home");
 
                 }
@@ -83,6 +92,10 @@ namespace Nero.Controllers
 
           await  signInManager.SignOutAsync();
             return RedirectToAction("Login"); ;
+        }
+        public IActionResult Contact()
+        {
+            return View();
         }
 
     }

@@ -9,17 +9,12 @@
             </p>
             <div class="w-25 text-center">
 
-                <button class="btn btn-outline-warning">GetStart</button>
-                <button class="btn btn-outline-success">Book Now</button>
+                <a href="#start" class="btn btn-outline-warning">GetStart</a>
+                <a class="btn btn-outline-success"asp-controller="Movie" asp-action="Index">Book Now</a>
             </div>
         </div>
         <div style="position:absolute;    bottom:-18%; left:10%; width:90%;" class="container-fluid mt-5">
-           @*  <div class="container mb-5 mt-5">
-
-                <h2 class="text-warning ">
-                    Collections
-                </h2>
-            </div> *@
+          
             <div class="container d-flex flex-wrap align-items-center gap-3">
 
                 @foreach (var category in ViewBag.Categories)
@@ -41,11 +36,11 @@
 <div style="margin-block:100px" class="container-fluid ">
     <div class="container mb-3">
 
-        <h2 class="text-warning ">
+        <h2 id="start" class="text-warning ">
             Some Available Movies
         </h2>
     </div>
-    <div class="container d-flex flex-wrap align-items-center gap-3">
+    <div id="" class=" container d-flex flex-wrap align-items-center gap-3">
 
         @foreach (var movie in Model)
         {
@@ -68,7 +63,7 @@
                             <a style="background-color:blue" class="btn ">
                                 @movie.MovieStatus
                             </a>
-                            <a class="btn btn-outline-success">Book</a>
+                            <a class="btn btn-outline-success" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@movie.Id" asp-route-quantity="1">Book</a>
                         }
                         else
                         {
@@ -88,22 +83,21 @@
         }
     </div>
 </div>
-
-
-
 <div class="container-fluid mt-5">
     <div class="container d-flex flex-wrap align-items-center gap-3">
+        @if(Model.Any(e=>e.MovieStatus==MovieStatus.Upcoming)){
 
-        @foreach (var movie in Model)
-        {
-            if (movie.MovieStatus == MovieStatus.Upcoming)
-            {
                 <div class="container mb-3 ">
 
                     <h2 class="text-warning ">
                         Soon
                     </h2>
                 </div>
+        }
+        @foreach (var movie in Model)
+        {
+            if (movie.MovieStatus == MovieStatus.Upcoming)
+            {
                 <div onclick="details(@movie.Id)" style="background-image: url('images/@movie.ImgUrl');" class="onefilm text-center">
                     <p>@movie.Name</p>
 

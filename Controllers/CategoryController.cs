@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Nero.CheckValidation;
 using Nero.Models;
@@ -9,6 +10,7 @@ using Nero.ViewModel;
 
 namespace Nero.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -19,15 +21,18 @@ namespace Nero.Controllers
 
             this.unitOfWork = unitOfWork;
         }
-
+        [AllowAnonymous]
         public IActionResult Index(CategoryVM model)
         {
-            model.Categories = unitOfWork.CategoryRepository.GetAll().ToList();
+            model.Categories = unitOfWork.CategoryRepository.GetAll()
+                .AsQueryable().Include(e=>e.Movies)
+                .ToList();
             return View(model);
         }
+        [AllowAnonymous]
         public IActionResult CategoryMovies(int id)
         {
-            ViewBag.catName = unitOfWork.CategoryRepository.Get(e => e.Id == id)?.SingleOrDefault().Name;
+            ViewBag.catName = unitOfWork.CategoryRepository.Get(e => e.Id == id)?.FirstOrDefault();
             var movies = unitOfWork.MovieRepository.Get(e => e.CategoryId == id);
             return View(movies);
         }

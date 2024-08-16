@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nero.Models;
 using Nero.Repository.IRepository;
 using Nero.Repository.ModelsRepository.MovieModel;
@@ -7,6 +8,7 @@ using Nero.ViewModel;
 
 namespace Nero.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class MovieController : Controller
     {
         
@@ -16,7 +18,7 @@ namespace Nero.Controllers
 
             this.unitOfWork = unitOfWork;
         }
-
+        [AllowAnonymous]
         public IActionResult Index(string status, MovieVM model)
         {
             model.Movies = unitOfWork.MovieRepository.GetAll();
@@ -32,7 +34,7 @@ namespace Nero.Controllers
 
             return View(model);
         }
-       
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var item = unitOfWork.MovieRepository.GetMovieandCategoryById(id);
@@ -45,32 +47,8 @@ namespace Nero.Controllers
             if (ModelState.IsValid) 
             {
 
-                if (model.StartDate > DateTime.Now)
-                {
-                    model.MovieStatus = MovieStatus.Upcoming;
-                }
-                else if (model.StartDate < DateTime.Now)
-                {
-                    model.MovieStatus = MovieStatus.Available;
-                }
-                else
-                {
-                    model.MovieStatus = MovieStatus.Expired;
-                }
-                Movie movie = new Movie()
-                {
-                    Name = model.Name,
-                    Price = model.Price,
-                    Description = model.Description,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
-                    MovieStatus = model.MovieStatus,
-                    ImgUrl = model.ImgUrl,
-                    CategoryId = model.CategoryId,
-                    CinemaId = model.CinemaId,
-                    TrailerUrl = model.TrailerUrl,
-
-                };
+                CheckValidation.CheckValidation.CheckStatus(model);
+             var movie=CheckValidation.CheckValidation.Test(model);
                 var result=CheckValidation.CheckValidation.Check(ModelState, Request, true);
                 if (result != null) { return result; }
                 unitOfWork.MovieRepository.Add(movie);
@@ -89,7 +67,7 @@ namespace Nero.Controllers
         [HttpGet]
         public IActionResult Edit(int id,MovieVM model)
         {
-            var movie = unitOfWork.MovieRepository.Get(e => e.Id == id).SingleOrDefault();
+            var movie = unitOfWork.MovieRepository.Get(e => e.Id == id)?.SingleOrDefault();
             if (movie == null)
             {
                 return NotFound();
@@ -106,10 +84,11 @@ namespace Nero.Controllers
         [HttpPost]
         public IActionResult Edit(MovieVM model)
         {
-            var movie = unitOfWork.MovieRepository.Get(e => e.Id == model.Id).SingleOrDefault();
+            var movie = unitOfWork.MovieRepository.Get(e => e.Id == model.Id)?.SingleOrDefault();
             if (ModelState.IsValid)
             {
-               unitOfWork.MovieRepository.updateFromVm(movie, model,fromMtoVm:true);
+                CheckValidation.CheckValidation.CheckStatus(model);
+                unitOfWork.MovieRepository.updateFromVm(movie, model,fromMtoVm:true);
                 var result = CheckValidation.CheckValidation.Check(ModelState, Request, true);
                 if (result != null) { return result; }
                 return RedirectToAction("Index");
@@ -127,7 +106,7 @@ namespace Nero.Controllers
 
 
 
-
+        [AllowAnonymous] 
         public IActionResult Search(string text)
         {
 

@@ -13,6 +13,8 @@ namespace Nero.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<ActorMovie> ActorsMovie { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
         {
             

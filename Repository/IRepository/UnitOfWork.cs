@@ -4,6 +4,8 @@ using Nero.Repository.ModelsRepository.ActorMoviesModel;
 using Nero.Repository.ModelsRepository.CategoryModel;
 using Nero.Repository.ModelsRepository.CinemaModel;
 using Nero.Repository.ModelsRepository.MovieModel;
+using Nero.Repository.ModelsRepository.OrderItemModel;
+using Nero.Repository.ModelsRepository.OrderModel;
 
 namespace Nero.Repository.IRepository
 {
@@ -19,6 +21,9 @@ namespace Nero.Repository.IRepository
             MovieRepository = new MovieRepository(context);
             ActiveMoviesRepository = new ActorMoviesRepository(context);
             ActorRepository = new ActorRepository(context);
+            OrderItemRepository = new OrderItemRepository(context);
+            OrderRepository = new OrderRepository(context);
+            
         }
 
         public ICategoryRepository CategoryRepository { get; set; }
@@ -30,5 +35,9 @@ namespace Nero.Repository.IRepository
         public ActiveMoviesRepository ActiveMoviesRepository { get; set; }
 
         public IActorRepository ActorRepository { get; set; }
+
+        public IOrderItemRepository OrderItemRepository { get; set; }
+
+        public IOrderRepository OrderRepository { get; set; }
     }
 }

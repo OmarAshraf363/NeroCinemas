@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Nero.Models;
 using Nero.Repository.IRepository;
 using Nero.Repository.ModelsRepository.CinemaModel;
@@ -7,6 +9,7 @@ using Nero.ViewModel;
 
 namespace Nero.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CinemaController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -17,16 +20,19 @@ namespace Nero.Controllers
 
             this.unitOfWork = unitOfWork;
         }
-
+        [AllowAnonymous]
         public IActionResult Index(CinemaVM model)
         {
-            model.Cinemas = unitOfWork.CinemaRepository.GetAll().ToList();
+            model.Cinemas = unitOfWork.CinemaRepository.GetAll().AsQueryable()
+                .Include(e=>e.Movies)
+                .ToList();
             return View(model);
         }
+        [AllowAnonymous]
         public IActionResult Movies(int id)
         {
-            ViewBag.name = unitOfWork.CinemaRepository.Get(e => e.Id == id).SingleOrDefault()?.Name;
-            var movies = unitOfWork.MovieRepository.Get(e => e.CinemaId == id).ToList();//spacifc get
+            ViewBag.name = unitOfWork.CinemaRepository.Get(e => e.Id == id)?.SingleOrDefault();
+            var movies = unitOfWork.MovieRepository.Get(e => e.CinemaId == id)?.ToList();//spacifc get
             return View(movies);
         }
 

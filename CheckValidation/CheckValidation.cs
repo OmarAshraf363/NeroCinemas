@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
+using Nero.ViewModel;
+using Nero.Models;
 
 namespace Nero.CheckValidation
 {
@@ -31,5 +33,38 @@ namespace Nero.CheckValidation
 
 
         }
+        public static void CheckStatus(MovieVM model)
+        {
+            if (model.StartDate > DateTime.Now)
+            {
+                model.MovieStatus = MovieStatus.Upcoming;
+            }
+            else if (model.StartDate < DateTime.Now)
+            {
+                model.MovieStatus = MovieStatus.Available;
+            }
+            else
+            {
+                model.MovieStatus = MovieStatus.Expired;
+            }
+        }
+       public static Movie Test(MovieVM model)
+        {
+            Movie movie = new Movie()
+            {
+                Name = model.Name,
+                Price = model.Price,
+                Description = model.Description,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                MovieStatus = model.MovieStatus,
+                ImgUrl = model.ImgUrl,
+                CategoryId = model.CategoryId,
+                CinemaId = model.CinemaId,
+                TrailerUrl = model.TrailerUrl,
+
+            };
+            return movie;
+        } 
     }
 }
