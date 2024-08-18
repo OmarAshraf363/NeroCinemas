@@ -2,11 +2,45 @@
 using Microsoft.AspNetCore.Mvc;
 using Nero.ViewModel;
 using Nero.Models;
+using System.Net.Mail;
 
 namespace Nero.CheckValidation
 {
     public static class CheckValidation
     {
+        public static bool SendConfirmationEmail(string userEmail, Order order)
+        {
+           
+            try
+            {
+                MailMessage mail = new MailMessage();
+                mail.To.Add(userEmail);
+                mail.From = new MailAddress("oa38150@gmail.com");
+                mail.Subject = "Booking Confirmation";
+                mail.Body = $"Dear {order.AppUser.UserName},\n\nThank you for your booking! Your tickets have been successfully booked.\n\nOrder Details:\nOrder ID: {order.Id}\nOrder Date: {order.CreatedAt}\n\nThank you for choosing us!";
+                mail.IsBodyHtml = false;
+
+                SmtpClient smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com ",
+                    Port = 587,
+                    UseDefaultCredentials = false,
+                    Credentials = new System.Net.NetworkCredential("oa38150@gmail.com", "deeo bpmm pmty pzcf"),
+                    EnableSsl = true,
+
+                };
+
+
+                smtp.Send(mail);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
         public static JsonResult Check(ModelStateDictionary modelState, HttpRequest request, bool state)
         {
 

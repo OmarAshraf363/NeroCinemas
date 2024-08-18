@@ -12,6 +12,7 @@ namespace Nero.Models
         public DateTime? UpdatedAt { get; set; } //updated when user complete ticket 
         public int Status { get; set; } = 0;//updated when user complete ticket 
         public int? Quantity {  get; set; }
+        public string? StripeChargeId {  get; set; }//to refund
 
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 

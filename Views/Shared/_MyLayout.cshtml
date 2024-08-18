@@ -36,6 +36,7 @@
                         <li>
                             <a asp-action="Contact" asp-controller="Account"><i class="fa-solid fa-circle-nodes me-1"></i>Contact</a>
                         </li>
+                      
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
@@ -50,6 +51,8 @@
                                 <a asp-action="Index" asp-controller="Cinema" class="nav-link ">Cinma</a>
 
                                 <a asp-action="Index" asp-controller="Movie" class="nav-link ">Movies</a>
+                                <a asp-action="Index" asp-controller="Order" class="nav-link ">Mangment Orders</a>
+                               
                             </div>
                         </li>
 
@@ -70,7 +73,12 @@
                     <a class="btn btn-outline-danger rounded-2 ms-2" asp-action="Logout" asp-controller="Account"> Logout</a>
                 </li>
                 <li class="nav-item">
-                    <a style="font-size:20px;" class="  " asp-area="" asp-controller="ShoppingCart" asp-action="Index"><i style="color:black" class="fa-solid fa-cart-shopping"></i> </a>
+                    <a style="font-size:20px;" class="  " asp-area="" asp-controller="ShoppingCart" asp-action="Index"><i style="color:#ccc" class="fa-solid fa-cart-shopping"></i> </a>
+
+                </li>
+                
+                <li>
+                    <a asp-action="Index" asp-controller="Order"><i class="fa-solid fa-circle-nodes me-1"></i>My Orders</a>
                 </li>
             </ul>
         </div>
@@ -89,6 +97,7 @@
     </div>
     </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

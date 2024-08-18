@@ -9,14 +9,14 @@
 
 <div class="container cart">
     <h1 class="mt-4">Shopping Cart</h1>
-    @if (TempData["SuccessMessage"] != null)
+    @* @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-    }
+    } *@
     @if (!Model.Any())
     {
         <p>Your cart is empty.</p>
@@ -25,7 +25,7 @@
     {
         <table class="table table-bordered mt-4">
             <thead>
-                <tr>
+                <tr> 
                     <th>Movie</th>
                     <th>Quantity</th>
                     <th>Price</th>
@@ -57,7 +57,7 @@
 
         <div class="text-right">
             <h4>Total: <span id="grand-total">@Model.Sum(i => i.TotalPrice).ToString("C")</span></h4>
-            <a asp-action="Checkout" class="btn btn-success">Proceed to Checkout</a>
+            <a asp-action="Pay" class="btn btn-success">Proceed to Checkout</a>
             <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Add More Movies  </a>
         </div>
     }

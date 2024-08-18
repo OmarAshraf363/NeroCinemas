@@ -9,6 +9,7 @@ using Nero.Repository.ModelsRepository.ActorMoviesModel;
 using Nero.Repository.ModelsRepository.CategoryModel;
 using Nero.Repository.ModelsRepository.CinemaModel;
 using Nero.Repository.ModelsRepository.MovieModel;
+using Stripe;
 using System.Configuration;
 
 namespace Nero
@@ -21,7 +22,12 @@ namespace Nero
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-           builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            //Stripe Configratioin
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+
+            builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;

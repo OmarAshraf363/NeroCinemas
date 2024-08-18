@@ -2,7 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Nero.Models;
 using Nero.Repository.IRepository;
+using Stripe.Checkout;
+using Stripe;
 using System.Net.Mail;
+using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace Nero.Controllers
 {
@@ -36,9 +40,12 @@ namespace Nero.Controllers
                 return View(new List<OrderItem>()); 
             }
 
-            var orderItems = unitOfWork.OrderItemRepository
-                .Get(e => e.OrderId == userOrder.Id,e=>e.Movie)?
-                                .ToList();
+            //var orderItems = unitOfWork.OrderItemRepository
+            //    .Get(e => e.OrderId == userOrder.Id,e=>e.Movie)?
+            //                    .ToList();
+            var orderItems=unitOfWork.OrderItemRepository.GetAll().Where(e=>e.OrderId==userOrder.Id).Include(e=>e.Movie).ToList();
+            var spacifcOrderItems = orderItems.Select(e => new { e.Movie, e.Quantity,e.OrderId }).ToList();
+            TempData["shoppingCart"] = JsonConvert.SerializeObject(spacifcOrderItems);
 
             return View(orderItems);
         }
@@ -143,59 +150,51 @@ namespace Nero.Controllers
 
             return RedirectToAction("Index");
         }
-        public IActionResult Checkout()
+
+ 
+        public IActionResult Pay()
         {
-            var userId = userManager.GetUserId(User);
-            var userOrder = unitOfWork.OrderRepository.Get(e => e.UserId == userId && e.Status == 0)?.SingleOrDefault();
-
-            if (userOrder != null)
+            var items = JsonConvert.DeserializeObject<IEnumerable<OrderItem>>((string)TempData["shoppingCart"]);
+            var order=unitOfWork.OrderRepository.Get(e=>e.Id==items.FirstOrDefault().OrderId)?.FirstOrDefault();
+            var options = new SessionCreateOptions
             {
-               
-                userOrder.Status = 1; 
-                userOrder.UpdatedAt = DateTime.Now;
-                unitOfWork.OrderRepository.Save();
-
-                
-                SendConfirmationEmail("Oa38150@gmail.com", userOrder);
-
-                
-                TempData["SuccessMessage"] = "Payment completed successfully. A confirmation email has been sent to your email address.";
-            }
-            else
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = new List<SessionLineItemOptions>(),
+            
+                Mode = "payment",
+                SuccessUrl = $"{Request.Scheme}://{Request.Host}/checkout/success",
+                CancelUrl = $"{Request.Scheme}://{Request.Host}/checkout/cancel",
+            };
+            foreach (var model in items)
             {
-                TempData["ErrorMessage"] = "No items in the cart to checkout.";
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        private void SendConfirmationEmail(string userEmail, Order order)
-        {
-            try
-            {
-                MailMessage mail = new MailMessage();
-                mail.To.Add(userEmail);
-                mail.From = new MailAddress("your-email@example.com");
-                mail.Subject = "Booking Confirmation";
-                mail.Body = $"Dear {order.AppUser.UserName},\n\nThank you for your booking! Your tickets have been successfully booked.\n\nOrder Details:\nOrder ID: {order.Id}\nOrder Date: {order.CreatedAt}\n\nThank you for choosing us!";
-                mail.IsBodyHtml = false;
-
-                SmtpClient smtp = new SmtpClient
+                var result = new SessionLineItemOptions
                 {
-                    Host = "smtp.gmail.com ",
-                    Port = 587,
-                    UseDefaultCredentials = false,
-                    Credentials = new System.Net.NetworkCredential("xxx", "xxx"),
-                    EnableSsl = true
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        Currency = "usd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = model.Movie.Name,
+                        },
+                        UnitAmount = (long)model.Movie.Price * 100,
+                    },
+                    Quantity = model.Quantity,
                 };
-                smtp.Send(mail);
+                options.LineItems.Add(result);
             }
-            catch (Exception )
+            var service = new SessionService();
+            var session = service.Create(options);
+          
+            if (order != null)
             {
-                Console.WriteLine("er");
+                order.StripeChargeId = session.Id; // Save the session ID or charge ID as needed
+                unitOfWork.OrderRepository.Save();
             }
+            return Redirect(session.Url);
         }
-
+      
+       
+       
     }
 }
     

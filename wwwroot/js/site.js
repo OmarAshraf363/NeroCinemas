@@ -151,11 +151,3 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
 
 
 
-
-
-
-
-
-
-
-
