@@ -1,0 +1,5 @@
+aa Info For Seeding and Production
+--add-migration 
+---update-database
+Admin Account:Admin@gmail.com
+Admin Password:Admin@123
