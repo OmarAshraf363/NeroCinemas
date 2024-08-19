@@ -71,7 +71,7 @@ namespace Nero.Data
             //role
             modelBuilder.Entity<IdentityRole>().HasData(
                    new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
-                   new IdentityRole { Id = "2", Name = "Customer", NormalizedName = "CUSTOMER" }
+                   new IdentityRole { Id = "2", Name = "Customar", NormalizedName = "CUSTOMAR" }
                       );
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
        new IdentityUserRole<string>
