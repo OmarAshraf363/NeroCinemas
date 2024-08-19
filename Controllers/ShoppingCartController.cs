@@ -39,10 +39,6 @@ namespace Nero.Controllers
             {
                 return View(new List<OrderItem>()); 
             }
-
-            //var orderItems = unitOfWork.OrderItemRepository
-            //    .Get(e => e.OrderId == userOrder.Id,e=>e.Movie)?
-            //                    .ToList();
             var orderItems=unitOfWork.OrderItemRepository.GetAll().Where(e=>e.OrderId==userOrder.Id).Include(e=>e.Movie).ToList();
             var spacifcOrderItems = orderItems.Select(e => new { e.Movie, e.Quantity,e.OrderId }).ToList();
             TempData["shoppingCart"] = JsonConvert.SerializeObject(spacifcOrderItems);

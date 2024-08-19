@@ -2,13 +2,39 @@
 
 @{
     Layout = "_MyLayout";
+
 }
 
 <div class="container mt-5">
+    @if (User.IsInRole("Customar"))
+    {
+        <h2 class="mb-4">My Orders</h2>
+    }
+    else
+    {
+        
     <h2 class="mb-4">Manage Orders</h2>
+    }
     @if (TempData["success?"] != null)
     {
         <div id="alert" class="alert alert-success">@TempData["success?"]</div>
+    }
+    @if (User.IsInRole("Admin"))
+    {
+
+        <div class="dropdown mb-3">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Filter by Status
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                <li><a class="dropdown-item" asp-route-status="">All</a></li>
+                <li><a class="dropdown-item" asp-route-status="1" asp-route-paystatus="@Nero.CheckValidation.CheckValidation.StaticDataInProcessPayment">IN Process</a></li>
+
+                <li><a class="dropdown-item" asp-route-status="1" asp-route-paystatus="@Nero.CheckValidation.CheckValidation.StaticDataSuccessPayment">Confirmed Via Admin</a></li>
+                <li><a class="dropdown-item" asp-route-status="0">Bending</a></li>
+
+            </ul>
+        </div>
     }
 
     <div class="table-responsive">
@@ -19,6 +45,9 @@
                     <th>User</th>
                     <th>Order Date</th>
                     <th>Status</th>
+
+                    <th>Payment Status</th>
+
                     <th>Total</th>
                     <th>Action</th>
                 </tr>
@@ -40,13 +69,23 @@
                                 <span class="badge badge-success">Confirmed</span>
                             }
                         </td>
-                        <td>@order.OrderItems.Sum(item => item.TotalPrice)</td>
+
+
+                        <td>@order.PaymentStatus</td>
+
+                        <td>@order.OrderItems.Sum(e => e.TotalPrice)</td>
                         <td>
                             @if (User.IsInRole("Customar"))
                             {
-                                if ( DateTime.Now >= order.UpdatedAt.Value.AddHours(2))
+                                if (DateTime.Now <= order.UpdatedAt.Value.AddHours(2))
                                 {
+                                    if (order.PaymentStatus!=Nero.CheckValidation.CheckValidation.StaticDataSuccessPayment)
+                                    {
+                                        
                                     <a asp-action="RejectOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Cancel Order</a>
+                                    }else{
+                                        <span class="text-muted">Sorry,Too Late To Cancel</span>
+                                    }
                                 }
                                 else
                                 {
@@ -57,24 +96,16 @@
                             }
                             else
                             {
-                                <a asp-action="ConfirmOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-success">Confirm</a>
-                                <a asp-action="RejectOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Reject</a>
+                                if (order.PaymentStatus == Nero.CheckValidation.CheckValidation.StaticDataInProcessPayment)
+                                {
 
-                                @*  @if (order.Status == 0)
-                                {
                                     <a asp-action="ConfirmOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-success">Confirm</a>
                                     <a asp-action="RejectOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Reject</a>
-                                }
-                                else if (order.Status == 0 && DateTime.Now >= order.UpdatedAt.Value.AddHours(2))
-                                {
-                                    <a asp-action="ConfirmOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-success">Confirm</a>
-                                    <a asp-action="RejectOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Reject</a>
-                                
-                                    }
-                                else
-                                {
+
+                                }else{
                                     <span class="text-muted">No actions available</span>
-                                } *@
+                                }
+
                             }
                         </td>
                     </tr>

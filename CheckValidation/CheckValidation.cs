@@ -8,6 +8,9 @@ namespace Nero.CheckValidation
 {
     public static class CheckValidation
     {
+        public static string StaticDataSuccessPayment= "Success-Confirmed-Via-Admin";
+        public static string StaticDataRefundedPayment = "Payment-Refunded";
+        public static string StaticDataInProcessPayment = "In-Process";
         public static bool SendConfirmationEmail(string userEmail, Order order)
         {
            

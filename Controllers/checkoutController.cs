@@ -37,6 +37,7 @@ namespace Nero.Controllers
 
                 userOrder.Status = 1;
                 userOrder.UpdatedAt = DateTime.Now;
+                userOrder.PaymentStatus = CheckValidation.CheckValidation.StaticDataInProcessPayment;
                 unitOfWork.OrderRepository.Save();
             }
             else
@@ -44,16 +45,6 @@ namespace Nero.Controllers
                 return View("NotFound");
             }
 
-            var userOrderItems = unitOfWork.OrderItemRepository
-                .Get(e => e.OrderId == userOrder.Id && e.Order.UserId == userId)?.ToList();
-            if (userOrderItems != null)
-            {
-                foreach (var item in userOrderItems)
-                {
-                    unitOfWork.OrderItemRepository.Delete(item.Id);
-                }
-                unitOfWork.OrderItemRepository.Save();
-            }
             ViewBag.Message = "Your payment was successful! Thank you for your purchase.";
             return View();
         }
@@ -70,7 +61,7 @@ namespace Nero.Controllers
             var order = unitOfWork.OrderRepository.Get(e => e.Id == id)?.FirstOrDefault();
             if (order != null)
             {
-                if (order.Status == 1)
+                if (order.Status == 1&&order.PaymentStatus!=CheckValidation.CheckValidation.StaticDataSuccessPayment)
                 {
                     var service = new SessionService();
                     var session = service.Get(order.StripeChargeId);
@@ -84,13 +75,14 @@ namespace Nero.Controllers
                     var refundService = new RefundService();
                     var refund = refundService.Create(refundOptions);
                     order.Status = 0;
+                    order.PaymentStatus =CheckValidation.CheckValidation.StaticDataRefundedPayment;
                     unitOfWork.OrderRepository.Save();
                     TempData["success?"] = "The Order is Rejected Successfully";
                     return RedirectToAction("Index", "Order");
                 }
                 else
                 {
-                    TempData["success?"] = "The PayMent Allredy Not Compeleted";
+                    TempData["success?"] = "Sorry,Can not Cancle this Order!!";
                     return RedirectToAction("Index", "Order");
                 }
             }
@@ -110,7 +102,7 @@ namespace Nero.Controllers
                 var result=CheckValidation.CheckValidation.SendConfirmationEmail(user, order);
                 if (result) {
                     TempData["success?"] = "Payment completed successfully. A confirmation email has been sent to your email address.";
-                    unitOfWork.OrderRepository.Delete(order.Id);
+                    order.PaymentStatus =CheckValidation.CheckValidation.StaticDataSuccessPayment;
                     unitOfWork.OrderRepository.Save();
                 }
                 else { TempData["success?"] = "Faild To Send Email"; }

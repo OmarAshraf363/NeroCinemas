@@ -51,6 +51,11 @@ namespace Nero.Controllers
                     return RedirectToAction("Index", "Home");
 
                 }
+                else
+                {
+                    ModelState.AddModelError("Address", result.Errors.FirstOrDefault()?.Description);
+                }
+
             }
             return View(model);
         }
