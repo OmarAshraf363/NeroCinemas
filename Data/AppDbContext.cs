@@ -65,8 +65,9 @@ namespace Nero.Data
             EmailConfirmed = true,
             PasswordHash = new PasswordHasher<AppUser>().HashPassword(null, "Admin@123"),
             SecurityStamp = string.Empty,
+            Address = "Test"
         }
-    );
+    ) ;
 
             //role
             modelBuilder.Entity<IdentityRole>().HasData(
