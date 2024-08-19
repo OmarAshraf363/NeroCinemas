@@ -5,21 +5,21 @@ using Nero.Models;
 
 namespace Nero.Data
 {
-    public class AppDbContext:IdentityDbContext<AppUser>
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         //DbSets
-        public DbSet<Cinema>Cinemas { get; set; }
+        public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Actor> Actors { get; set; }
         public DbSet<ActorMovie> ActorsMovie { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
+
         }
-     
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -38,8 +38,8 @@ namespace Nero.Data
             modelBuilder.Entity<ActorMovie>()
                 .HasKey(am => new { am.ActorId, am.MovieId });
 
-            modelBuilder.Entity<Category>().HasMany(e=>e.Movies)
-                .WithOne(e=>e.Category).HasForeignKey(e=>e.CategoryId);
+            modelBuilder.Entity<Category>().HasMany(e => e.Movies)
+                .WithOne(e => e.Category).HasForeignKey(e => e.CategoryId);
 
 
             // Seed data for Cinemas
@@ -54,7 +54,11 @@ namespace Nero.Data
                 new Category { Id = 2, Name = "Comedy" },
                 new Category { Id = 3, Name = "Drama" }
             );
-
+            //role
+            modelBuilder.Entity<IdentityRole>().HasData(
+                   new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
+                   new IdentityRole { Id = "2", Name = "Customer", NormalizedName = "CUSTOMER" }
+                      );
             // Seed data for Movies
             modelBuilder.Entity<Movie>().HasData(
                 new Movie
