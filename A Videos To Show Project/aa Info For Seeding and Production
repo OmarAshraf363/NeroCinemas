@@ -1,5 +1,7 @@
 aa Info For Seeding and Production
+-Change DataBaseNAme From JsonFile
 --add-migration 
 ---update-database
+//Account Info
 Admin Account:Admin@gmail.com
 Admin Password:Admin@123
