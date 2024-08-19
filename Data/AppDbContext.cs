@@ -54,11 +54,32 @@ namespace Nero.Data
                 new Category { Id = 2, Name = "Comedy" },
                 new Category { Id = 3, Name = "Drama" }
             );
+            modelBuilder.Entity<AppUser>().HasData(
+        new AppUser
+        {
+            Id = "123548",
+            UserName = "Admin",
+            Email = "Admin@gmail.com",
+            NormalizedUserName = "ADMIN",
+            NormalizedEmail = "ADMIN@GMAIL.COM",
+            EmailConfirmed = true,
+            PasswordHash = new PasswordHasher<AppUser>().HashPassword(null, "Admin@123"),
+            SecurityStamp = string.Empty,
+        }
+    );
+
             //role
             modelBuilder.Entity<IdentityRole>().HasData(
                    new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
                    new IdentityRole { Id = "2", Name = "Customer", NormalizedName = "CUSTOMER" }
                       );
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+       new IdentityUserRole<string>
+       {
+           UserId = "123548",
+           RoleId = "1" // Admin role
+       }
+   );
             // Seed data for Movies
             modelBuilder.Entity<Movie>().HasData(
                 new Movie

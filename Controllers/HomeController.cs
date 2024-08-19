@@ -31,6 +31,7 @@ namespace Nero.Controllers
 
         public IActionResult Index()
         {
+            
             var user = signInManager.IsSignedIn(principal:signInManager.Context.User);
             if (user)
             {
