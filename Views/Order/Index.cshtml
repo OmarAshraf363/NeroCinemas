@@ -77,15 +77,25 @@
                         <td>
                             @if (User.IsInRole("Customar"))
                             {
-                                if (DateTime.Now <= order.UpdatedAt.Value.AddHours(2))
+                                @if (order.UpdatedAt.HasValue && DateTime.Now <= order.UpdatedAt.Value.AddHours(2))
                                 {
                                     if (order.PaymentStatus!=Nero.CheckValidation.CheckValidation.StaticDataSuccessPayment)
                                     {
-                                        
-                                    <a asp-action="RejectOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Cancel Order</a>
+                                        if (order.PaymentStatus!=Nero.CheckValidation.CheckValidation.StaticDataRefundedPayment)
+                                        {
+                                            
+                                        <a asp-action="RejectOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Cancel Order</a>
+
+                                        }
+                                            <a onclick="deleteIt(@order.Id,'Order')" class="btn btn-sm btn-danger">Remove Order</a>
                                     }else{
                                         <span class="text-muted">Sorry,Too Late To Cancel</span>
                                     }
+                                }else if (order.UpdatedAt == null)
+                                {
+                                    <a asp-action="Index" asp-controller="ShoppingCart" asp-route-id="@order.Id" class="btn btn-sm btn-primary">Complete Order</a>
+                                    <a  onclick="deleteIt(@order.Id,'Order')" class="btn btn-sm btn-danger">Remove Order</a>
+
                                 }
                                 else
                                 {

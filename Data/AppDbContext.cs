@@ -19,13 +19,7 @@ namespace Nero.Data
         {
             
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    base.OnConfiguring(optionsBuilder);
-        //    var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        //    var connection = builder.GetConnectionString("DefaultConnection");
-        //    optionsBuilder.UseSqlServer(connection);
-        //}
+     
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -46,6 +40,66 @@ namespace Nero.Data
 
             modelBuilder.Entity<Category>().HasMany(e=>e.Movies)
                 .WithOne(e=>e.Category).HasForeignKey(e=>e.CategoryId);
+
+
+            // Seed data for Cinemas
+            modelBuilder.Entity<Cinema>().HasData(
+                new Cinema { Id = 1, Name = "Cinema A", Description = "Cinema in City Center", CinemaLogo = "cinema-a-logo.png", Address = "123 City Center Blvd" },
+                new Cinema { Id = 2, Name = "Cinema B", Description = "Downtown Cinema", CinemaLogo = "cinema-b-logo.png", Address = "456 Downtown St" }
+            );
+
+            // Seed data for Categories
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Action" },
+                new Category { Id = 2, Name = "Comedy" },
+                new Category { Id = 3, Name = "Drama" }
+            );
+
+            // Seed data for Movies
+            modelBuilder.Entity<Movie>().HasData(
+                new Movie
+                {
+                    Id = 1,
+                    Name = "Action Movie 1",
+                    Description = "Exciting action movie",
+                    Price = 10.99,
+                    ImgUrl = "movie1.png",
+                    TrailerUrl = "https://trailer-url.com/action-movie-1",
+                    StartDate = new DateTime(2024, 8, 1),
+                    EndDate = new DateTime(2024, 8, 31),
+                    MovieStatus = MovieStatus.Available,
+                    NumOfVisit = 100,
+                    CategoryId = 1,
+                    CinemaId = 1
+                },
+                new Movie
+                {
+                    Id = 2,
+                    Name = "Comedy Movie 1",
+                    Description = "Hilarious comedy movie",
+                    Price = 8.99,
+                    ImgUrl = "movie2.png",
+                    TrailerUrl = "https://trailer-url.com/comedy-movie-1",
+                    StartDate = new DateTime(2024, 8, 25),
+                    EndDate = new DateTime(2024, 9, 5),
+                    MovieStatus = MovieStatus.Upcoming,
+                    NumOfVisit = 50,
+                    CategoryId = 2,
+                    CinemaId = 2
+                }
+            );
+
+            // Seed data for Actors
+            modelBuilder.Entity<Actor>().HasData(
+                new Actor { Id = 1, FirstName = "John", LastName = "Doe", Bio = "Action star", ProfilePucture = "john-doe.jpg", News = "Starring in Action Movie 1" },
+                new Actor { Id = 2, FirstName = "Jane", LastName = "Smith", Bio = "Comedy queen", ProfilePucture = "jane-smith.jpg", News = "Leading role in Comedy Movie 1" }
+            );
+
+            // Seed data for ActorMovies (many-to-many relationship)
+            modelBuilder.Entity<ActorMovie>().HasData(
+                new ActorMovie { ActorId = 1, MovieId = 1 },
+                new ActorMovie { ActorId = 2, MovieId = 2 }
+            );
         }
     }
 }

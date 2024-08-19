@@ -45,5 +45,11 @@ namespace Nero.Controllers
             }
             return View(allOrrders);
         }
+        public IActionResult Delete(int id ) 
+        { 
+            unitOfWork.OrderRepository.Delete(id);
+            unitOfWork.OrderRepository.Save();
+            return RedirectToAction("Index");
+        }
     }
 }
