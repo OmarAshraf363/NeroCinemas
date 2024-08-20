@@ -87,7 +87,7 @@
                                         <a asp-action="RejectOrder" asp-controller="checkout" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Cancel Order</a>
 
                                         }
-                                            <a onclick="deleteIt(@order.Id,'Order')" class="btn btn-sm btn-danger">Remove Order</a>
+                                           @*  <a onclick="deleteIt(@order.Id,'Order')" class="btn btn-sm btn-danger">Remove Order</a> *@
                                     }else{
                                         <span class="text-muted">Sorry,Too Late To Cancel</span>
                                     }
